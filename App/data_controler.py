@@ -1,11 +1,9 @@
 import sqlite3
-from collections import namedtuple
+from domain import *
 
 DB_FILE_NAME = "Backend/myMoney.db"
 INIT_TABLES_SQL = "Backend/tables.sql"
 TAG_FILES = "Backend/tags.txt"
-
-Movement = namedtuple("movement", "date, amount, concept, tag")
 
 
 def initialize_tables():
@@ -21,20 +19,33 @@ def initialize_tables():
                 print(f"=> DONE")
             except sqlite3.IntegrityError:
                 print("... already in the system => DONE")
-            except:
-                print("##Unknonw error => ABORT")
+            except sqlite3.OperationalError as e:
+                print("### Unknonw error during initalitzation => DONE")
+                print(e)
 
     con.commit()
     con.close()
 
+def list_expenses_by_month():
+    con = sqlite3.connect(DB_FILE_NAME)
+    cursor = con.cursor()
+    for row in cursor.execute("SELECT * FROM MonthlyExpensesWithTags "):
+        print(row)
+    con.close
+    return
 
-def add_expense(m: Movement):
-    if m.amount > 0:
-        raise ValueError("**Expense must have negative amount €")
+def list_tags():
+    con = sqlite3.connect(DB_FILE_NAME)
+    cursor = con.cursor()
+    ret = {row[1] : row[0] for row in cursor.execute("SELECT * FROM TAGS")}
+    con.close
+    return ret
 
-def add_income(m: Movement):
-    if m.amount < 0:
-        raise ValueError("**Income must have positive amount €")
-
+def add_movement(m: Movement):
+    con = sqlite3.connect(DB_FILE_NAME)
+    cursor = con.cursor()
+    cursor.execute(f"INSERT INTO movements VALUES (NULL, {movent_to_txt(m)})")
+    con.commit()
+    con.close()
 
 initialize_tables()
