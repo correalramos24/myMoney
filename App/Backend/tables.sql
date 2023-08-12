@@ -13,7 +13,11 @@ CREATE TABLE IF NOT EXISTS Movements (
 );
 
 
-INSERT INTO Tags (tag_id, tag_name) VALUES
-    (1, 'TRANSPORT'),(2,'PAYROLL'),(3, 'PARTY'),
-    (4, 'MATERIAL'),(5,'SUPERMERCAT'),(6, 'OTHER'),
-    (7, 'GENERAL');
+INSERT INTO Tags (tag_id, tag_name) VALUES (1, 'TRANSPORT');
+INSERT INTO Tags (tag_id, tag_name) VALUES (2,'PAYROLL');
+INSERT INTO Tags (tag_id, tag_name) VALUES (3, 'PARTY');
+INSERT INTO Tags (tag_id, tag_name) VALUES (4, 'MATERIAL');
+INSERT INTO Tags (tag_id, tag_name) VALUES (5,'SUPERMERCAT');
+INSERT INTO Tags (tag_id, tag_name) VALUES (6, 'OTHER');
+INSERT INTO Tags (tag_id, tag_name) VALUES (7, 'GENERAL');
+INSERT INTO Tags (tag_id, tag_name) VALUES (8, 'BAR/REST.');
