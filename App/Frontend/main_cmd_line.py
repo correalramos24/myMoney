@@ -1,5 +1,5 @@
 
-from Frontend.arguments import *
+from Frontend.cmd_line_utils import *
 from datetime import datetime as dt
 from utils import log, setLogging
 from Backend import domain
@@ -18,13 +18,20 @@ def main():
 
         match op:
             case 1:
-                amount = float(input("Enter amount for the expense: "))
-                date = dt.today()
+                domain.new_expense( request_date(), 
+                                    request_concept(), 
+                                    request_amount("expense"), 
+                                    request_tag()
+                )
             case 2:
-                amount = float(input("Enter amount for the income: "))
-                date = dt.today()
+                domain.new_income(  request_date(), 
+                                    request_concept(), 
+                                    request_amount("income"), 
+                                    request_tag()
+                )
             case 3:
-                print("")
+                #TODO: Complete list
+                pass
             case -1:
                 print("Finishing app")
             case _:

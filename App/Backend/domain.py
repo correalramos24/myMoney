@@ -16,24 +16,22 @@ class Movement:
 # ======= Tx create expense =======
 
 def new_expense(date : datetime, concept : str, amount : float, tag : str):
-    log[0]("Creating expense with ...\n")
-
     if amount > 0:
-        log[1]("Positive expense, converting into negative")
+        log[1]("Positive expense, converting into negative\n")
         amount = amount * -1
 
     if amount == 0:
-        log[1]("Empty expense, amount == 0")
+        log[1]("Empty expense, amount == 0\n")
 
     m = Movement(date, amount, concept, tag)
+    log[0](f"Adding movement {m}\n")
 
 
 # ======= Tx create income =======
 
 def new_income(date : datetime, concept : str, amount : float, tag : str):
-    log[0]("Creating income with ...\n")
-
     if amount == 0:
-        log[1]("Empty expense, amount == 0")
+        log[1]("Empty expense, amount == 0\n")
 
     m = Movement(date, amount, concept, tag)
+    log[0](f"Adding movement {m}\n")
