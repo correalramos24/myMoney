@@ -1,5 +1,6 @@
 import sqlite3
-from domain import *
+from Backend.domain import *
+from ..utils import log
 
 DB_FILE_NAME = "Backend/myMoney.db"
 INIT_TABLES_SQL = "Backend/tables.sql"
