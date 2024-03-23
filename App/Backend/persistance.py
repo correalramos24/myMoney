@@ -2,9 +2,9 @@ import sqlite3
 from Backend.domain import *
 from ..utils import log
 
-DB_FILE_NAME = "Backend/myMoney.db"
-INIT_TABLES_SQL = "Backend/tables.sql"
-TAG_FILES = "Backend/tags.txt"
+DB_FILE_NAME = "myMoney.db"
+INIT_TABLES_SQL = "tables.sql"
+TAG_FILES = "tags.txt"
 
 
 def initialize_tables():
