@@ -2,9 +2,9 @@
 from utils import utils_print as up
 from utils import utils_files as uf
 
-from pathlib import Path
 import pickle as pkl
 import pandas as pd
+from pathlib import Path
 
 class PandasPersistance:
     """
@@ -15,7 +15,7 @@ class PandasPersistance:
     def __init__(self, path : Path):
         self.root : Path = path
         self.meta : Path = Path(self.root, "meta.data")
-        self.instances : dict[str, Path] = dict()
+        self.files : dict[str, Path] = dict()
         #TODO: EXTEND THIS
         #self.cache : dict[str, pd.DataFrame] = dict()
         
@@ -23,29 +23,32 @@ class PandasPersistance:
     
         if uf.check_path_exists(path):
             self.__load()
+            self.__info2("METADATA:", self.files)
         else:
             self.__info("Creating empty persitance structure!")
             self.__create_persistance()
     
     #========================INTERFACE METHODS==================================
-    def store(self, df : pd.DataFrame, id: str):
-        p = Path(self.root, id+".csv")
-        if not self.exist(id):
-            self.__info("ADDING NEW ID:", id)
-            self.instances[id] = p
+    def store(self, df : pd.DataFrame, pers_id: str):
+        self.__info(f"STORING {pers_id} ({id(df)})")
+        p = Path(self.root, pers_id+".csv")
+        if not self.exist(pers_id):
+            self.__info("ADDING NEW ID:", pers_id)
+            self.files[pers_id] = p
             self.__save_metadata()
         df.to_csv(p, index=True)            
 
-    def load(self, id: str) -> pd.DataFrame:
-        path_df = self.instances.get(id)
+    def load(self, pers_id: str) -> pd.DataFrame:
+        path_df = self.files.get(pers_id)
         if path_df:
+            self.__info("LOADING", pers_id)
             return pd.read_csv(path_df, index_col=0)
         else:
             self.__warn("Accesing non-found ID:", id)
             return None
 
-    def exist(self, id) -> bool:
-        return id in self.instances
+    def exist(self, pers_id) -> bool:
+        return pers_id in self.files
 
     #==========================PRIVATE METHODS==================================
     def __load(self):
@@ -57,15 +60,16 @@ class PandasPersistance:
 
     def __load_metadata(self):
         with open(self.meta, "rb") as md_file:
-            self.instances = pkl.load(md_file)
+            self.files = pkl.load(md_file)
 
     def __save_metadata(self):
         with open(self.meta, "wb") as md_file:
-            pkl.dump(self.instances, md_file)
+            pkl.dump(self.files, md_file)
 
     @staticmethod
-    def __info(*args):
-        up.info("PandasPersistance:", *args)
+    def __info(*args): up.info("DATABS:", *args)
+    @staticmethod
+    def __info2(*args): up.info2("DATABS:", *args)
 
 if __name__ == "__main__":
     up.enable_info(True)

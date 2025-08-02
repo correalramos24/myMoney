@@ -30,6 +30,9 @@ class Domain:
         
         # Save to conclude Tx:
         self.__save_domain("movements", mov_month)
+    
+    def add_movements_from_csv(self, csv_path: Path, format : str ="BS"):
+        pass
         
     def list_movement_month(self, month):
         df =  self.__get_domain("movements", month)
@@ -81,6 +84,7 @@ class Domain:
     
     @staticmethod
     def __info(*args): up.info("DOMAIN:", *args)
+    @staticmethod
     def __info2(*args): up.info2("DOMAIN:", *args)
     
     @staticmethod 
