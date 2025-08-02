@@ -31,6 +31,12 @@ class Domain:
         # Save to conclude Tx:
         self.__save_domain("movements", mov_month)
     
+    def del_movement(self, mov_id):
+        pass
+    
+    def edit_movement(self, mov_id, **kwargs):
+        pass
+    
     def add_movements_from_csv(self, csv_path: Path, format : str ="BS"):
         pass
         
@@ -38,7 +44,7 @@ class Domain:
         df =  self.__get_domain("movements", month)
         print(df)
     
-    def list__movements_all(self):
+    def list_movements_all(self):
         pass
     
     #==========================PRIVATE METHODS==================================
@@ -100,12 +106,12 @@ if __name__ == "__main__":
     
     test_path =Path(Path(__file__).parent, "test_domain")
     d = Domain(test_path)
-    test_movement = {
-        "concept": "ABACUS",
-        "amount": -10,
-        "tag_name": "MATERIAL",
-        "tag_color": "RED",
-        "date": "01-08-2025",
-    }
-    d.add_movement(**test_movement)
+    #test_movement = {
+    #    "concept": "ABACUS",
+    #    "amount": -10,
+    #    "tag_name": "MATERIAL",
+    #    "tag_color": "RED",
+    #    "date": "01-08-2025",
+    #}
+    #d.add_movement(**test_movement)
     d.list_movement_month("08_25")
