@@ -49,7 +49,9 @@ class PandasPersistance:
 
     def exist(self, pers_id) -> bool:
         return pers_id in self.files
-
+    
+    def list_entities(self) -> list[str]:
+        return list(self.files.keys())
     #==========================PRIVATE METHODS==================================
     def __load(self):
         self.__load_metadata()

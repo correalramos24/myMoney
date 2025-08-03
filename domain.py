@@ -44,10 +44,30 @@ class Domain:
         df =  self.__get_domain("movements", month)
         print(df)
     
-    def list_movements_all(self):
-        pass
+    
+    def get_movs(self, dom_id: str = None) -> pd.DataFrame:
+        if dom_id: 
+            return self.__get(dom_id)
+        
+        ret = []
+        for e in self.list_avail_months():
+            ret.append(self.__get(e))
+        
+        return pd.concat(ret, ignore_index=True)
+    
+    def list_avail_months(self):
+        return self.db.list_entities()
     
     #==========================PRIVATE METHODS==================================
+    def __get(self, dom_id: str) -> pd.DataFrame:
+        instance = self.instances.get(dom_id)
+        
+        if instance is not None: 
+            return instance
+        elif self.db.exist(dom_id):
+            self.instances[dom_id] = self.db.load(dom_id)
+            return self.instances[dom_id]
+            
     def __get_domain(self, instance_type : str, dom_id : str) -> pd.DataFrame:
         if instance_type != "movements" and instance_type != "budget":
             raise Exception(f"Invalid {instance_type} @ get_instance")
@@ -106,12 +126,13 @@ if __name__ == "__main__":
     
     test_path =Path(Path(__file__).parent, "test_domain")
     d = Domain(test_path)
-    #test_movement = {
-    #    "concept": "ABACUS",
-    #    "amount": -10,
-    #    "tag_name": "MATERIAL",
-    #    "tag_color": "RED",
-    #    "date": "01-08-2025",
-    #}
+    test_movement = {
+        "concept": "SOPAR",
+        "amount": -33,
+        "tag_name": "CENA",
+        "tag_color": "ORANGE",
+        "date": "01-07-2025",
+    }
     #d.add_movement(**test_movement)
     d.list_movement_month("08_25")
+    d.list_movement_month("07_25")
