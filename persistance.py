@@ -29,10 +29,10 @@ class PandasPersistance(AbstractPersistance):
     
     #========================INTERFACE METHODS==================================
     def store(self, content: any, pers_id : str):
-        self._info(f"STORING {pers_id} ({id(content)})")
+        self._dbg(f"STORING {pers_id} ({id(content)})")
         p = Path(self.root, pers_id+".csv")
         if not self.exist(pers_id):
-            self._info("ADDING NEW ID:", pers_id)
+            self._dbg("ADDING NEW ID:", pers_id)
             self.entities[pers_id] = p
             self._save_metadata()
         content.to_csv(p, index=True)            

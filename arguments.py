@@ -1,13 +1,20 @@
 from utils.utils_bash import execute_command_get_ouput
-from utils.utils_print import enable_info
+from utils.utils_print2 import myLoggerLevels, myLogger
 
 import argparse
 from pathlib import Path
 
 VERSION="ALFA"
 
+def parse_log_level(level_str):
+    try:
+        return myLoggerLevels[level_str.upper()]
+    except KeyError:
+        raise argparse.ArgumentTypeError(f"Invalid log level: {level_str}")
+
+
 def parse_user_args():
-    
+
     # Declare the flags:
     parser = argparse.ArgumentParser(description="myMoney - Money manager",
                                     usage="myMoney.py", 
@@ -24,7 +31,8 @@ def parse_user_args():
                         action='store_true')
     
     parser.add_argument('--verbose', help="Set verbose level", 
-                        type=int, default=0)    
+                        type=parse_log_level, default=myLoggerLevels.INFO, 
+                        choices=list(myLoggerLevels))    
         
     parser.add_argument('--version', help="Print YAW version", 
                         action='store_true')
@@ -44,7 +52,8 @@ def parse_user_args():
         print(f"VERSION: {VERSION}")
         exit(0)
     
-    enable_info(parser.parse_args().info)
+    # Set verbose level:
+    myLogger.set_verbose_lvl(parser.parse_args().verbose)
     
     return parser.parse_args()
     

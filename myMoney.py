@@ -1,5 +1,5 @@
 from arguments import *
-from frontend import frontendDash, frontendCLI
+from frontend import frontendCLI
 from utils.utils_print import enable_info
 from utils.utils_controllers import AbstractFrontend
 from pathlib import Path
@@ -18,7 +18,8 @@ def main():
     if mode == "cli":
         frontend = frontendCLI(root)
     elif mode == "dash":
-        frontend = frontendDash(root)
+        frontend = None
+        raise Exception("Not implemented YET")
     
         # 2. LOOP
     frontend.loop()
