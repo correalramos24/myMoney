@@ -8,7 +8,7 @@ from datetime import datetime
 class domainMovements(AbstractDomain):
     
     fields = ["concept", "amount", "tag", "date"]
-    mov_types  = ["str", "float64", "str", "datetime"]
+    types  = ["str", "float64", "str", "datetime64[ns]"]
     
     def init_database(self, db_root): return PandasPersistance(db_root)
     def _create_new_instance(self): return pd.DataFrame()
@@ -37,13 +37,13 @@ class domainMovements(AbstractDomain):
     def get_movs(self, dom_id: str | list[str] | None = None) -> pd.DataFrame:
         if upy.is_a_list(dom_id) or dom_id is None:
             dom_id = self.get_avail_instances() if dom_id is None else dom_id
-            info = [self._get_instance(m) for m in dom_id]
+            info = [self.__get_with_types(m) for m in dom_id]
             if not info: 
                 raise Exception("NO DATA FOUND!")
             else: 
                 return pd.concat(info, ignore_index=True)                
         elif dom_id:
-            return self._get_instance(dom_id)
+            return self.__get_with_types(dom_id)
         else:
             raise Exception(f"UNRECOGNISED PARAMETER {dom_id}")
     
@@ -53,6 +53,11 @@ class domainMovements(AbstractDomain):
         return None
     
     #===========================PRIVATE METHODS=================================
+    def __get_with_types(self, dom_id: str):
+        info : pd.DataFrame = self._get_instance(dom_id)
+        info = info.astype(dict(zip(self.fields,self.types)))
+        return info
+    
     @staticmethod
     def __get_month(dt: datetime):
         "Return a string with format month-year"

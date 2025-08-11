@@ -44,9 +44,10 @@ class frontendCLI(AbstractCLI):
     @upy.check_excpetions
     def data_from_callback(self, data_callback: callable):
         data : pd.DataFrame = data_callback()
-        if "data" in data.columns:
+        if "date" in data.columns:
             data['date'] = pd.to_datetime(data['date'], errors='coerce')
-            data.sort_values(by="date", inplace=True)        
+            self._info("Sorting values by", "date")
+            data.sort_values(by="date", inplace=True)
         print(data)
     
     @upy.check_excpetions
